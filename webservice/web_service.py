@@ -14,8 +14,16 @@ def index():
 
 
 @app.route('/event/api/events', methods=['GET'])
-def get_tasks():
+def get_event():
     return jsonify({'events': data_store.get_events()})
+
+@app.route('/event/api/events/<int:event_id>', methods=['GET'])
+def get_event_by_id(event_id):
+    return jsonify({'events': data_store.get_event_by_id(event_id)})
+
+#@app.route('/event/api/event/', methods=['PUT'])
+#def put_event():
+#    return jsonify({'events': data_store.get_events()})
 
 @app.route('/event/api/types', methods=['GET'])
 def get_types():
