@@ -32,11 +32,8 @@ class InMemoryEventStore():
 
     def get_event_by_id(self, id):
         for event in self.events:
-            if event.id == id:
+            if event['id'] == id:
                 return event
 
-    def get_event_by_title(self, title):
-        for event in self.events:
-            if event.title == title:
-                return event
+
 
