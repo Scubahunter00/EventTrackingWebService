@@ -1,28 +1,9 @@
-
-
-template = [
-        {
-            'id': 1,
-            'title': u'Bought groceries',
-            'type': u'purchase',
-            'description': u'went to the store',
-            'date': '10/11/17',
-            'time': '13:34'
-        },
-        {
-            'id': 2,
-            'title': u'Learned Python',
-            'type': u'education',
-            'description': u'found a good Python tutorial on the web',
-            'date': '10/11/17',
-            'time': '12:12'
-        }
-]
+from datetime import datetime
 
 class InMemoryEventStore():
 
     def __init__(self):
-        self.events = template
+        self.events = []
 
     def get_events(self):
         return self.events
@@ -34,6 +15,17 @@ class InMemoryEventStore():
         for event in self.events:
             if event['id'] == id:
                 return event
+
+
+    def get_events_by_date_range(self,start_date,end_date):
+        eventList = []
+        for event in self.events:
+            current_event_date = datetime.strptime(event['date'], '%m/%d/%y')
+            if current_event_date >= start_date and current_event_date <= end_date:
+                eventList.append(event)
+
+        return eventList
+
 
 
 
