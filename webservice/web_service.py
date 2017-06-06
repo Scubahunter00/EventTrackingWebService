@@ -1,5 +1,6 @@
 from datetime import date
 from flask import Flask, jsonify, abort
+from flask.helpers import make_response
 from datastore.InMemoryEventStore import InMemoryEventStore
 
 app = Flask(__name__)
@@ -55,6 +56,12 @@ def generate_id():
     global current_id
     current_id +=1
     return current_id
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
