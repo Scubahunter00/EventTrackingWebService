@@ -1,6 +1,9 @@
 from datetime import date
+import datetime
 from flask import Flask, jsonify, abort
+from flask.globals import request
 from flask.helpers import make_response
+import time
 from datastore.InMemoryEventStore import InMemoryEventStore
 
 app = Flask(__name__)
@@ -47,6 +50,21 @@ def validate_event(event):
 
     if event['title'] == None:
         raise ValueError('Event provided without title')
+
+
+@app.route('/event/api/events', methods=['POST'])
+def create_event():
+    if not request.json or not 'title' in request.json:
+        abort(400)
+    event = {
+        'title': request.json['title'],
+        'description': request.json.get('description', ""),
+        'type': request.json.get('type', "unknown"),
+        'date': request.json.get('date', time.strftime("%d/%m/%Y")),
+        'id': request.json.get('id', generate_id())
+    }
+    data_store.put_event(event)
+    return jsonify({'event': event}), 201
 
 
 
